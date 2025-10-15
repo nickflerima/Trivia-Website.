@@ -8,7 +8,6 @@
     navToggle.addEventListener('click', () => {
       const isOpen = menu.classList.toggle('show');
       navToggle.setAttribute('aria-expanded', String(isOpen));
-    });
   }
 
   const themeToggle = document.getElementById('theme-toggle');
@@ -22,7 +21,6 @@
     const next = current === 'dark' ? 'light' : 'dark';
     applyTheme(next);
     localStorage.setItem(STORAGE_KEY, next);
-  });
 
   const setupForm = document.getElementById('setup-form');
   const categorySelect = document.getElementById('category');
@@ -188,8 +186,6 @@
       const evt = new Event("submit", { bubbles: true, cancelable: true });
       setupForm.dispatchEvent(evt);
     }
-  });
-  });
 
 
   setupForm?.addEventListener('submit', async (e) => {
@@ -229,7 +225,6 @@
       setupError.textContent = err?.message || 'Failed to load questions.';
       setupError.hidden = false;
     }
-  });
 
   loadCategories();
 })();
