@@ -1,24 +1,24 @@
-# My Website
+# Trivia Arcade
 
-A modern, accessible static website starter.
+A modern, accessible trivia game powered by the Open Trivia Database.
 
-## Local preview
-
-Use any static server. On macOS with Python:
+## Play locally
 
 ```bash
-cd my-website
+cd /Users/nickflerima/Websites/my-website
 python3 -m http.server 8080
 # visit http://localhost:8080
 ```
 
-## Deploy options
+## Features
 
-- Netlify: drag-and-drop the folder or use CLI.
-- Vercel: `vercel` in the project directory.
-- GitHub Pages: push to a repo and enable Pages.
+- Setup screen: category, difficulty, number of questions, type
+- Live scoring and progress HUD
+- Multiple choice and True/False
+- Result screen with play-again
+- Dark/light themes, responsive layout
 
-## Customize
+## Notes
 
-- Update branding in `index.html` and colors in `styles.css`.
-- Replace hero copy, add sections, and tweak layout.
+- Questions are fetched from `https://opentdb.com/api.php`.
+- Categories are loaded from `https://opentdb.com/api_category.php`.

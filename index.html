@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>My Website</title>
-  <meta name="description" content="Professional starter site" />
+  <title>Trivia Arcade</title>
+  <meta name="description" content="Play fast, fun trivia powered by Open Trivia DB" />
   <link rel="stylesheet" href="/styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,12 +13,11 @@
 <body>
   <header class="site-header">
     <nav class="nav" aria-label="Primary">
-      <a class="logo" href="/">Brand</a>
+      <a class="logo" href="/">Trivia Arcade</a>
       <button class="nav-toggle" aria-expanded="false" aria-controls="primary-menu"><span class="visually-hidden">Menu</span>☰</button>
       <ul id="primary-menu" class="menu">
+        <li><a href="#app">Play</a></li>
         <li><a href="#about">About</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#contact">Contact</a></li>
         <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌓</button></li>
       </ul>
     </nav>
@@ -27,61 +26,85 @@
   <main>
     <section class="hero">
       <div class="container">
-        <h1>Build something great.</h1>
-        <p>Modern, fast, and accessible website starter.</p>
-        <a class="btn primary" href="#contact">Get Started</a>
+        <h1>Test your knowledge.</h1>
+        <p>Pick a category, choose a difficulty, and race through questions.</p>
+        <a class="btn primary" href="#app">Start Playing</a>
+      </div>
+    </section>
+
+    <section id="app" class="section">
+      <div class="container">
+        <div class="grid">
+          <div class="card">
+            <h2>Setup</h2>
+            <form id="setup-form" class="setup-form">
+              <label>
+                <span>Category</span>
+                <select id="category"></select>
+              </label>
+              <label>
+                <span>Difficulty</span>
+                <select id="difficulty">
+                  <option value="">Any</option>
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+              </label>
+              <label>
+                <span>Number of Questions</span>
+                <input id="amount" type="number" min="5" max="25" value="10" />
+              </label>
+              <label>
+                <span>Type</span>
+                <select id="type">
+                  <option value="">Any</option>
+                  <option value="multiple">Multiple Choice</option>
+                  <option value="boolean">True / False</option>
+                </select>
+              </label>
+              <button class="btn" type="submit">Start Quiz</button>
+            </form>
+            <p id="setup-error" class="muted" role="alert" hidden></p>
+          </div>
+          <div class="card">
+            <h2>Game</h2>
+            <div id="game" class="game" aria-live="polite">
+              <div id="loading" class="loading" hidden>
+                <div class="spinner" aria-hidden="true"></div>
+                <span>Loading questions…</span>
+              </div>
+              <div id="hud" class="hud" hidden>
+                <div><strong>Q</strong> <span id="current"></span>/<span id="total"></span></div>
+                <div><strong>Score</strong> <span id="score">0</span></div>
+              </div>
+              <div id="question-block" class="question-block" hidden>
+                <h3 id="question"></h3>
+                <div id="answers" class="answers"></div>
+                <button id="next" class="btn" disabled>Next</button>
+              </div>
+              <div id="result" class="result" hidden>
+                <h3>Results</h3>
+                <p>You scored <strong><span id="final-score"></span></strong> out of <span id="final-total"></span>.</p>
+                <button id="play-again" class="btn">Play Again</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
     <section id="about" class="section">
       <div class="container">
         <h2>About</h2>
-        <p>This is a clean starter to move fast without sacrificing quality.</p>
-      </div>
-    </section>
-
-    <section id="services" class="section">
-      <div class="container grid">
-        <article class="card">
-          <h3>Fast</h3>
-          <p>Lightweight, optimized assets and best practices baked in.</p>
-        </article>
-        <article class="card">
-          <h3>Responsive</h3>
-          <p>Looks great on phones, tablets, and desktops out of the box.</p>
-        </article>
-        <article class="card">
-          <h3>Accessible</h3>
-          <p>Semantic HTML and ARIA for inclusive experiences.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="contact" class="section">
-      <div class="container">
-        <h2>Contact</h2>
-        <form class="contact-form" name="contact" netlify>
-          <label>
-            <span>Name</span>
-            <input name="name" required />
-          </label>
-          <label>
-            <span>Email</span>
-            <input name="email" type="email" required />
-          </label>
-          <label>
-            <span>Message</span>
-            <textarea name="message" rows="5" required></textarea>
-          </label>
-          <button class="btn" type="submit">Send</button>
-        </form>
+        <p>Questions are fetched from the community-driven <a href="https://opentdb.com" target="_blank" rel="noopener noreferrer">Open Trivia Database</a>.</p>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p>© <span id="year"></span> Brand. All rights reserved.</p>
+      <p>© <span id="year"></span> Trivia Arcade. All rights reserved.</p>
     </div>
   </footer>
 
