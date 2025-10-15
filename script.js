@@ -71,6 +71,15 @@
     scoreEl.textContent = '0';
   };
 
+  const POKEMON_LOCAL_ID = 'pokemon-local';
+
+  const appendPokemonCategory = () => {
+    const opt = document.createElement('option');
+    opt.value = POKEMON_LOCAL_ID;
+    opt.textContent = 'Pokémon (Local)';
+    categorySelect.appendChild(opt);
+  };
+
   const loadCategories = async () => {
     try {
       categorySelect.innerHTML = '<option value="">Any</option>';
@@ -95,6 +104,8 @@
         opt.textContent = cat.name;
         categorySelect.appendChild(opt);
       }
+    } finally {
+      appendPokemonCategory();
     }
   };
 
@@ -105,6 +116,14 @@
     if (difficulty) params.set('difficulty', difficulty);
     if (type) params.set('type', type);
     return `https://opentdb.com/api.php?${params.toString()}`;
+  };
+
+  const filterLocalQuestions = (items, { amount, difficulty, type }) => {
+    let filtered = items;
+    if (difficulty) filtered = filtered.filter((q) => q.difficulty === difficulty);
+    if (type) filtered = filtered.filter((q) => q.type === type);
+    filtered = shuffle(filtered).slice(0, amount);
+    return filtered;
   };
 
   const showQuestion = () => {
@@ -178,13 +197,22 @@
 
     setHidden(loading, false);
     try {
-      const url = buildApiUrl(amount, category, difficulty, type);
-      const res = await fetch(url);
-      const data = await res.json();
-      if (!data || data.response_code !== 0 || !Array.isArray(data.results) || data.results.length === 0) {
-        throw new Error('No questions returned. Try different settings.');
+      if (category === POKEMON_LOCAL_ID) {
+        const res = await fetch('data/pokemon.json');
+        const all = await res.json();
+        const selected = filterLocalQuestions(all, { amount, difficulty, type });
+        if (!selected.length) throw new Error('No local Pokémon questions match your filters.');
+        questions = selected;
+      } else {
+        const url = buildApiUrl(amount, category, difficulty, type);
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!data || data.response_code !== 0 || !Array.isArray(data.results) || data.results.length === 0) {
+          throw new Error('No questions returned. Try different settings.');
+        }
+        questions = data.results;
       }
-      questions = data.results;
+
       index = 0;
       score = 0;
       setHidden(loading, true);
