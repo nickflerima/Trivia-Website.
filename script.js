@@ -30,6 +30,8 @@
   const amountInput = document.getElementById('amount');
   const typeSelect = document.getElementById('type');
   const setupError = document.getElementById('setup-error');
+  const pokemonGenWrap = document.getElementById('pokemon-gen-wrap');
+  const pokemonGen = document.getElementById('pokemon-gen');
 
   const loading = document.getElementById('loading');
   const hud = document.getElementById('hud');
@@ -118,8 +120,9 @@
     return `https://opentdb.com/api.php?${params.toString()}`;
   };
 
-  const filterLocalQuestions = (items, { amount, difficulty, type }) => {
+  const filterLocalQuestions = (items, { amount, difficulty, type, generation }) => {
     let filtered = items;
+    if (generation) filtered = filtered.filter((q) => q.generation === generation);
     if (difficulty) filtered = filtered.filter((q) => q.difficulty === difficulty);
     if (type) filtered = filtered.filter((q) => q.type === type);
     filtered = shuffle(filtered).slice(0, amount);
@@ -185,6 +188,12 @@
     setupForm.scrollIntoView({ behavior: 'smooth' });
   });
 
+  categorySelect?.addEventListener('change', () => {
+    const showGen = categorySelect.value === POKEMON_LOCAL_ID;
+    setHidden(pokemonGenWrap, !showGen);
+    if (!showGen && pokemonGen) pokemonGen.value = '';
+  });
+
   setupForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     setupError.hidden = true;
@@ -194,13 +203,14 @@
     const category = categorySelect.value;
     const difficulty = difficultySelect.value;
     const type = typeSelect.value;
+    const generation = pokemonGen?.value || '';
 
     setHidden(loading, false);
     try {
       if (category === POKEMON_LOCAL_ID) {
         const res = await fetch('data/pokemon.json');
         const all = await res.json();
-        const selected = filterLocalQuestions(all, { amount, difficulty, type });
+        const selected = filterLocalQuestions(all, { amount, difficulty, type, generation });
         if (!selected.length) throw new Error('No local Pokémon questions match your filters.');
         questions = selected;
       } else {

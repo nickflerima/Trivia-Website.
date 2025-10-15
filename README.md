@@ -28,3 +28,9 @@ python3 -m http.server 8080
 - Choose "Pokémon (Local)" in Category to play built‑in questions.
 - Questions live at `data/pokemon.json` — edit or add more.
 - Filters (difficulty/type) and amount apply to the local set.
+
+## Pokémon Generation Filter
+
+- When you select "Pokémon (Local)", a Generation dropdown appears.
+- You can filter questions by Gen I–IX or leave Any.
+- Edit or extend questions with a "generation" field in data/pokemon.json.
