@@ -180,9 +180,15 @@
   };
 
   nextBtn?.addEventListener('click', nextQuestion);
-  playAgainBtn?.addEventListener('click', () => {
+  playAgainBtn?.addEventListener("click", () => {
     resetGameUI();
-    setupForm.scrollIntoView({ behavior: 'smooth' });
+    if (setupForm && typeof setupForm.requestSubmit === "function") {
+      setupForm.requestSubmit();
+    } else if (setupForm) {
+      const evt = new Event("submit", { bubbles: true, cancelable: true });
+      setupForm.dispatchEvent(evt);
+    }
+  });
   });
 
 
@@ -195,7 +201,6 @@
     const category = categorySelect.value;
     const difficulty = difficultySelect.value;
     const type = typeSelect.value;
-    const generation = pokemonGen?.value || '';
 
     setHidden(loading, false);
     try {
