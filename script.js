@@ -8,6 +8,7 @@
     navToggle.addEventListener('click', () => {
       const isOpen = menu.classList.toggle('show');
       navToggle.setAttribute('aria-expanded', String(isOpen));
+    });
   }
 
   const themeToggle = document.getElementById('theme-toggle');
@@ -15,12 +16,17 @@
   const STORAGE_KEY = 'theme';
   const applyTheme = (mode) => { document.documentElement.dataset.theme = mode; };
   const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved === 'light' || saved === 'dark') applyTheme(saved); else applyTheme(prefersDark.matches ? 'dark' : 'light');
+  if (saved === 'light' || saved === 'dark') {
+    applyTheme(saved);
+  } else {
+    applyTheme(prefersDark.matches ? 'dark' : 'light');
+  }
   themeToggle?.addEventListener('click', () => {
     const current = document.documentElement.dataset.theme;
     const next = current === 'dark' ? 'light' : 'dark';
     applyTheme(next);
     localStorage.setItem(STORAGE_KEY, next);
+  });
 
   const setupForm = document.getElementById('setup-form');
   const categorySelect = document.getElementById('category');
@@ -131,7 +137,10 @@
     questionEl.textContent = decode(q.question);
     answersEl.innerHTML = '';
 
-    const options = q.type === 'boolean' ? [q.correct_answer, ...q.incorrect_answers] : shuffle([q.correct_answer, ...q.incorrect_answers]);
+    const options = q.type === 'boolean'
+      ? [q.correct_answer, ...q.incorrect_answers]
+      : shuffle([q.correct_answer, ...q.incorrect_answers]);
+
     for (const option of options) {
       const btn = document.createElement('button');
       btn.className = 'answer';
@@ -155,7 +164,9 @@
     } else {
       button.classList.add('wrong');
       for (const child of answersEl.children) {
-        if (child.textContent === decode(questions[index].correct_answer)) child.classList.add('correct');
+        if (child.textContent === decode(questions[index].correct_answer)) {
+          child.classList.add('correct');
+        }
       }
     }
     nextBtn.disabled = false;
@@ -178,15 +189,16 @@
   };
 
   nextBtn?.addEventListener('click', nextQuestion);
-  playAgainBtn?.addEventListener("click", () => {
+
+  playAgainBtn?.addEventListener('click', () => {
     resetGameUI();
-    if (setupForm && typeof setupForm.requestSubmit === "function") {
+    if (setupForm && typeof setupForm.requestSubmit === 'function') {
       setupForm.requestSubmit();
     } else if (setupForm) {
-      const evt = new Event("submit", { bubbles: true, cancelable: true });
+      const evt = new Event('submit', { bubbles: true, cancelable: true });
       setupForm.dispatchEvent(evt);
     }
-
+  });
 
   setupForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -225,6 +237,7 @@
       setupError.textContent = err?.message || 'Failed to load questions.';
       setupError.hidden = false;
     }
+  });
 
   loadCategories();
 })();
