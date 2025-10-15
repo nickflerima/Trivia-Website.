@@ -22,3 +22,9 @@ python3 -m http.server 8080
 
 - Questions are fetched from `https://opentdb.com/api.php`.
 - Categories are loaded from `https://opentdb.com/api_category.php`.
+
+## Pokémon category (local)
+
+- Choose "Pokémon (Local)" in Category to play built‑in questions.
+- Questions live at `data/pokemon.json` — edit or add more.
+- Filters (difficulty/type) and amount apply to the local set.
